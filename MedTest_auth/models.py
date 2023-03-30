@@ -7,44 +7,34 @@ import uuid
 
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, email=None, cert_no=None, password=None):
+    def create_user(self, username, name, password=None):
 
         #creates a user with the parameters
-        if not email and not cert_no:
-            raise ValueError('Cert_no or Email address is required!')
+        if username is None:
+            raise ValueError('Username is required!')
+
+        if name is None:
+            raise ValueError('Full name is required!')
 
         if password is None:
             raise ValueError('Password is required!')
 
-        if cert_no and email:
-            user = self.model(
-                email = self.normalize_email(email),
-                cert_no = cert_no.upper().strip(),
-            )
-        elif cert_no is not None:
-            user = self.model(
-                cert_no = cert_no.upper().strip(),
-            )
-        elif email is not None:
-            user = self.model(
-                email = self.normalize_email(email),
-            )
+        user = self.model(
+            username = username.upper().strip(),
+            name = name.title().strip(),
+        )
 
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, email, password=None):
+    def create_superuser(self, username, name, password=None):
         # create a superuser with the above parameters
-        if not email:
-            raise ValueError('Email Address is required!')
-
-        if password is None:
-            raise ValueError('Password should not be empty')
 
         user = self.create_user(
-            email = self.normalize_email(email),
+            username=username,
+            name=name,
             password=password,
         )
 
@@ -57,8 +47,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     user_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
-    reg_no = models.CharField(max_length=10, db_index=True, unique=True, blank=True, null=True)
-    email = models.CharField(max_length=100, db_index=True, unique=True, verbose_name='email address', blank=True, null=True)
+    username = models.CharField(max_length=20, db_index=True, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=60, db_index=True, blank=True)
+
     pic = models.ImageField(null=True, blank=True, upload_to='uploads/', default='img/user.png')
 
     date_joined = models.DateTimeField(verbose_name='date_joined', auto_now_add=True)
@@ -66,23 +57,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_hospital = models.BooleanField(default=False)
-    is_hospital_admin = models.BooleanField(default=False)
+    is_scheduled = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
-    # REQUIRED_FIELDS = ['email',]
+    REQUIRED_FIELDS = ['name',]
 
     objects = UserManager()
 
     def __str__(self):
-        if self.is_hospital or self.is_staff or self.is_hospital_admin:
-            return f'{self.email}'
-        else:
-            if self.email:
-                return f'{self.email}'
-
-            return f'{self.cert_no}'
+        return f'{self.username}'
 
     def has_perm(self, perm, obj=None):
         return self.is_staff

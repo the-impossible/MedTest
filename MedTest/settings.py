@@ -56,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "MedTest.urls"
+AUTH_USER_MODEL = "MedTest_auth.User"
 
 TEMPLATES = [
     {
