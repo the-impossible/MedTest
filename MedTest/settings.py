@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "MedTest_auth",
+    "MedTest_basic",
 ]
 
 MIDDLEWARE = [

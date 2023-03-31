@@ -4,7 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path("", include("MedTest_basic.urls", namespace="basic")),
     path("admin/", admin.site.urls),
+    path("auth/", include("MedTest_auth.urls", namespace="auth") ),
 ]
 
 if settings.DEBUG:
