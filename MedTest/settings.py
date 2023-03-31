@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "MedTest_auth",
     "MedTest_basic",
+    "MedTest_test",
 ]
 
 MIDDLEWARE = [

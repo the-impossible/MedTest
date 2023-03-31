@@ -57,7 +57,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_scheduled = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
 
@@ -73,11 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
-
-    def get_absolute_url(self):
-        return reverse("reg:account_profile", kwargs={
-        'pk':self.user_id
-    })
 
     class Meta:
         db_table = 'Users'
