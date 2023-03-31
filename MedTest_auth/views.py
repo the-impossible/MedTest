@@ -6,3 +6,6 @@ from django.views.generic.base import TemplateView
 
 class DashboardView(TemplateView):
     template_name = "auth/dashboard.html"
+
+class LoginView(TemplateView):
+    template_name = "auth/login.html"
