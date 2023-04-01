@@ -102,6 +102,7 @@ class Department(models.Model):
 class College(models.Model):
     college_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     college_title = models.CharField(max_length=30, unique=True)
+    college_description = models.CharField(max_length=100)
 
     def __str__(self):
         return self.college_title
@@ -112,7 +113,7 @@ class College(models.Model):
 
 
 class Programme(models.Model):
-    programme_title = models.CharField(max_length=30, unique=True)
+    programme_title = models.CharField(max_length=50, unique=True)
     programme_description = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
@@ -128,7 +129,6 @@ class StudentProfile(models.Model):
     programme = models.ForeignKey(Programme, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
 
     def __str__(self):
@@ -137,3 +137,4 @@ class StudentProfile(models.Model):
     class Meta:
         db_table = 'Student Profile'
         verbose_name_plural = 'Student Profile'
+

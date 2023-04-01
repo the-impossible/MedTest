@@ -20,6 +20,8 @@
   <!-- Custom js for this page-->
   <script src="{% static 'auth/js/dashboard.js' %}"></script>
   <script src="{% static 'auth/js/Chart.roundedBarCharts.js' %}"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/r-2.3.0/datatables.min.js"></script>
+
   <script>
     window.setTimeout(function() {
         $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -31,4 +33,5 @@
         });
 
     }, 10000);
+    $('#table_id').DataTable( );
 </script>
