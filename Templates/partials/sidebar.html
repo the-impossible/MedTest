@@ -2,35 +2,35 @@
 
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link" href="index.html">
+      <li class="nav-item {% if request.path == '/auth/dashboard' %} active {% endif %} ">
+        <a class="nav-link" href="{% url 'auth:dashboard' %}">
           <i class="icon-grid menu-icon"></i>
-          <span class="menu-title">Dashboard</span>
+          <span class="menu-title">Dashboard </span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-          <i class="icon-layout menu-icon"></i>
-          <span class="menu-title">UI Elements</span>
+          <i class="icon-head menu-icon"></i>
+          <span class="menu-title">Student Accounts</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a></li>
+            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Create Accounts</a></li>
+            <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Manage Accounts</a></li>
           </ul>
         </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
           <i class="icon-columns menu-icon"></i>
-          <span class="menu-title">Form elements</span>
+          <span class="menu-title">Medical Test</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="form-elements">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Basic Elements</a></li>
+            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Schedule Test</a></li>
+            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Manage Test</a></li>
           </ul>
         </div>
       </li>
@@ -98,9 +98,16 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="pages/documentation/documentation.html">
-          <i class="icon-paper menu-icon"></i>
-          <span class="menu-title">Documentation</span>
+          <i class="icon-head menu-icon"></i>
+          <span class="menu-title">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="" data-toggle="modal" data-target="#basicModal">
+          <i class="ti-power-off menu-icon"></i>
+          <span class="menu-title">Logout</span>
         </a>
       </li>
     </ul>
   </nav>
+
