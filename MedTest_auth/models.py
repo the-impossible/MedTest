@@ -77,3 +77,63 @@ class User(AbstractBaseUser, PermissionsMixin):
         db_table = 'Users'
         verbose_name_plural = 'Users'
 
+class Session(models.Model):
+    session_title = models.CharField(max_length=9, unique=True)
+    session_description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.session_title
+
+    class Meta:
+        db_table = 'Session'
+        verbose_name_plural = 'Sessions'
+
+class Department(models.Model):
+    dept_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    dept_title = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.dept_title
+
+    class Meta:
+        db_table = 'Department'
+        verbose_name_plural = 'Departments'
+
+class College(models.Model):
+    college_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    college_title = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.college_title
+
+    class Meta:
+        db_table = 'College'
+        verbose_name_plural = 'Colleges'
+
+
+class Programme(models.Model):
+    programme_title = models.CharField(max_length=30, unique=True)
+    programme_description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.programme_title
+
+    class Meta:
+        db_table = 'Programme'
+        verbose_name_plural = 'Programmes'
+
+class StudentProfile(models.Model):
+    stud_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    user_id = models.OneToOneField(User,blank=True, null=True, on_delete=models.CASCADE)
+    programme = models.ForeignKey(Programme, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user_id}'
+
+    class Meta:
+        db_table = 'Student Profile'
+        verbose_name_plural = 'Student Profile'

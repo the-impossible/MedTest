@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic.base import TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.views import View
 
@@ -47,3 +48,9 @@ class LogoutView(LoginRequiredMixin, View):
         logout(request)
         messages.success(request, 'You are successfully logged out, to continue login again')
         return redirect('auth:login')
+
+class CreateStudentAccount(SuccessMessageMixin, CreateView):
+    model = ''
+    form_class = ''
+    template_name = ''
+    success_message = ''
