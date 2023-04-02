@@ -11,7 +11,7 @@ import csv, io, codecs
 
 
 from MedTest_auth.models import *
-from MedTest_auth.forms import CreateStudentForm
+from MedTest_auth.forms import *
 
 PASSWORD = '12345678'
 # Create your views here.
@@ -77,7 +77,6 @@ class ManageStudentAccount(ListView):
             objs = []
             sub_objs = []
 
-            programme = form.cleaned_data.get('programme')
             session = form.cleaned_data.get('session')
             college = form.cleaned_data.get('college')
 
@@ -87,7 +86,7 @@ class ManageStudentAccount(ListView):
             created_users = User.objects.bulk_create(objs)
 
             for user in created_users:
-                sub_objs.append(StudentProfile(user_id=user, programme=programme, session=session, college=college))
+                sub_objs.append(StudentProfile(user_id=user, session=session, college=college))
             created_user_profiles = StudentProfile.objects.bulk_create(sub_objs)
 
         else:
@@ -101,9 +100,39 @@ class ManageStudentAccount(ListView):
 
         return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse("auth:manage_student")
+
+
+class StudentDeleteView(SuccessMessageMixin, DeleteView):
+    model = User
+    success_message = "Student has been deleted!"
 
     def get_success_url(self):
         return reverse("auth:manage_student")
+
+
+class StudentAccountView(CreateView):
+    model = User
+    template_name = "auth/create_student.html"
+    form_class = SingleCreateStudentForm
+
+    def get_success_url(self):
+        return reverse("auth:manage_student")
+
+    def form_valid(self, form):
+        college = form.cleaned_data.get('college')
+        session = form.cleaned_data.get('session')
+
+        form.instance.password = make_password(PASSWORD)
+        form = super().form_valid(form)
+
+        messages.success(self.request, f"Account created for {self.object.username}")
+        StudentProfile.objects.create(user_id=self.object, session=session, college=college)
+
+        return form
+
+
 
 
 

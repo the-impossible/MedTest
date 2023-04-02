@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Student{% endblock title %}
+{% block head %}{% include 'partials/auth_head.html' %}{% endblock head %}
+{% block body %}
+
+  <div class="container-scroller">
+    {% block nav %} {% include 'partials/auth_nav.html' %} {% endblock %}
+
+    <div class="container-fluid page-body-wrapper">
+      {% include 'partials/sidebar.html' %}
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% include 'partials/messages.html' %}
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    Create Student
+                  </h4>
+                  <form class="form-sample" method="POST">
+                    {% csrf_token %}
+
+                    <div class="row mt-5">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Reg. Number <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.username.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Full Name <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.name.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Session <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.session }}
+                            {% if form.session.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.session.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">College <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.college }}
+                            {% if form.college.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.college.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Submit</label>
+                          <div class="col-sm-9">
+                            <div class="form-check">
+                              <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        {% block footer %}{% include 'partials/auth_footer.html' %}{% endblock footer %}
+
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  {% include 'partials/modal_create_student.html' %}
+
+  {% block script %}{% include 'partials/auth_script.html' %}{% endblock script %}
+
+{% endblock body %}

@@ -112,24 +112,13 @@ class College(models.Model):
         verbose_name_plural = 'Colleges'
 
 
-class Programme(models.Model):
-    programme_title = models.CharField(max_length=50, unique=True)
-    programme_description = models.CharField(max_length=100, blank=True, null=True)
-
-    def __str__(self):
-        return self.programme_title
-
-    class Meta:
-        db_table = 'Programme'
-        verbose_name_plural = 'Programmes'
-
 class StudentProfile(models.Model):
     stud_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     user_id = models.OneToOneField(User,blank=True, null=True, on_delete=models.CASCADE)
-    programme = models.ForeignKey(Programme, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.user_id}'
@@ -138,3 +127,26 @@ class StudentProfile(models.Model):
         db_table = 'Student Profile'
         verbose_name_plural = 'Student Profile'
 
+class ScheduleTest(models.Model):
+    test_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    stud_id = models.ForeignKey(StudentProfile,blank=True, null=True, on_delete=models.CASCADE)
+    has_expired = models.BooleanField(default=False)
+    test_date = models.DateTimeField()
+
+    def __str__(self):
+        return f'TEST DATE FOR: {self.stud_id} is {test_date}'
+
+    class Meta:
+        db_table = 'Schedule Test'
+        verbose_name_plural = 'Schedule Tests'
+
+class AmountToSchedule(models.Model):
+    amount = models.IntegerField()
+    amount_description = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.amount}'
+
+    class Meta:
+        db_table = 'Amount to schedule'
+        verbose_name_plural = 'Amount to schedule'

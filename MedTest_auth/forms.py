@@ -30,21 +30,12 @@ class CreateStudentForm(forms.Form):
         }
     ))
 
-    programme = forms.ModelChoiceField(queryset=Programme.objects.all(), empty_label="(Select Programme)", required=True, help_text="Select academic programme", widget=forms.Select(
-        attrs={
-            'class':'form-control',
-        }
-    ))
 
     college = forms.ModelChoiceField(queryset=College.objects.all(), empty_label="(Select College)", required=True, help_text="Select College", widget=forms.Select(
         attrs={
             'class':'form-control',
         }
     ))
-
-    # class Meta:
-    #     model = StudentProfile
-    #     fields = ('programme', 'session', 'college')
 
     def clean_file(self):
 
@@ -58,3 +49,43 @@ class CreateStudentForm(forms.Form):
 
         return file
 
+class SingleCreateStudentForm(forms.ModelForm):
+
+    session = forms.ModelChoiceField(queryset=Session.objects.all(), empty_label="(Select Session)", required=True, help_text="Select academic session", widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    college = forms.ModelChoiceField(queryset=College.objects.all(), empty_label="(Select College)", required=True, help_text="Select College", widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    username = forms.CharField(help_text='Enter Registration number',widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder':'Enter Registration number',
+        }
+    ))
+
+    name = forms.CharField(help_text='Enter Full name',widget=forms.TextInput(
+        attrs={
+            'placeholder':'Enter Full name',
+            'class':'form-control',
+        }
+    ))
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        exists = User.objects.filter(username=username).exists()
+
+        if exists:
+            raise forms.ValidationError("Account already exist!")
+
+        return username
+
+    class Meta:
+        model = User
+        fields = ('username', 'name')

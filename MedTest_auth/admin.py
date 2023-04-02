@@ -16,7 +16,6 @@ class UserAdmin(UserAdmin):
     fieldsets = ()
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Programme)
 admin.site.register(Session)
 admin.site.register(Department)
 admin.site.register(College)
