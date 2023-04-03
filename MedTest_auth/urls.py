@@ -15,6 +15,8 @@ from MedTest_auth.views import  (
     ManageTest,
     ScheduleTestView,
     DeleteScheduleView,
+
+    ViewTest,
 )
 
 urlpatterns = [
@@ -29,4 +31,6 @@ urlpatterns = [
     path('manage_test/', ManageTest.as_view(), name="manage_test"),
     path('schedule_test/', ScheduleTestView.as_view(), name="schedule_test"),
     path('delete_test/<str:pk>/', DeleteScheduleView.as_view(), name="delete_test"),
+
+    path('view_test/', ViewTest.as_view(), name="view_test"),
 ]

@@ -8,6 +8,9 @@
           <span class="menu-title">Dashboard </span>
         </a>
       </li>
+
+      {% if request.user.is_staff %}
+
       <li class="nav-item {% if request.path == '/auth/manage_student/' or request.path == '/auth/create_student/' %}active{% endif %}">
         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
           <i class="icon-head menu-icon"></i>
@@ -34,6 +37,22 @@
           </ul>
         </div>
       </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'auth:view_test' %}">
+          <i class="icon-columns menu-icon"></i>
+          <span class="menu-title">View Test Date</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="pages/documentation/documentation.html">
+          <i class="icon-columns menu-icon"></i>
+          <span class="menu-title">View Result</span>
+        </a>
+      </li>
+
+      {% endif %}
 
       <li class="nav-item">
         <a class="nav-link" href="pages/documentation/documentation.html">

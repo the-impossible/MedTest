@@ -168,3 +168,10 @@ class AmountToSchedule(models.Model):
     class Meta:
         db_table = 'Amount to schedule'
         verbose_name_plural = 'Amount to schedule'
+
+class TestResult(models.Model):
+    result_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
+    stud_id = models.ForeignKey(StudentProfile,blank=True, null=True, on_delete=models.CASCADE)
+    dept_title = models.CharField(max_length=30, unique=True)
+    has_expired = models.BooleanField(default=False)
+    test_date = models.DateTimeField()

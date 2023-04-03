@@ -19,6 +19,7 @@ PASSWORD = '12345678'
 class DashboardView(TemplateView):
     template_name = "auth/dashboard.html"
 
+
 class LoginView(View):
     def get(self, request):
         return render(request, 'auth/login.html')
@@ -193,3 +194,10 @@ class DeleteScheduleView(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         return reverse("auth:manage_test")
+
+class ViewTest(ListView):
+    template_name = 'auth/view_test.html'
+
+    def get_queryset(self):
+        stud_id = StudentProfile.objects.get(user_id=self.request.user).stud_id
+        return ScheduleTest.objects.filter(stud_id=stud_id).order_by('-test_date')

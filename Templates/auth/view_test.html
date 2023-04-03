@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Dashboard{% endblock title %}
+{% block head %}{% include 'partials/auth_head.html' %}{% endblock head %}
+{% block body %}
+
+  <div class="container-scroller">
+
+    {% block nav %} {% include 'partials/auth_nav.html' %} {% endblock %}
+
+    <div class="container-fluid page-body-wrapper">
+
+      {% include 'partials/sidebar.html' %}
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% include 'partials/messages.html' %}
+
+          <div class="row">
+
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    My Scheduled Test
+                  </h4>
+                  <div class="table-responsive">
+                    <table class="table table-striped" id="table_id">
+                      <thead>
+                        <tr>
+                          <th> User </th>
+                          <th> Full Name </th>
+                          <th> Test Date </th>
+                          <th> Has Expired </th>
+                          <th> Action </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        {% for object in object_list %}
+                        <tr>
+                          <td class="py-1"><img src={{object.stud_id.user_id.pic.url}} alt="image"/></td>
+                          <td>{{object.stud_id.user_id.name}}</td>
+                          <td>{{object.test_date}}</td>
+                          <td> <label class="badge
+                          {% if object.has_expired %}
+                          badge-warning
+                          {% else %}
+                          badge-primary
+                          {% endif %}
+                             ">{{object.has_expired}}</label> </td>
+                          <td><a class="btn btn-success" {% if not object.has_expired %} data-toggle="modal" data-target="#infoModal{{forloop.counter}}"  style="cursor: pointer;" {% endif %}> <i class="fa fa-trash"></i> Test Info </a></td>
+                        </tr>
+
+                        <div class="modal fade" id="infoModal{{forloop.counter}}" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog" id="uploadDialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Test instruction</h5>
+                                <button type="button" class="close btn btn-secondary" data-dismiss="modal"><span>×</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <p><b>VENUE</b>:  Shehy Moh'd Kangiwa Medical Centre Kaduna Polytechnic </p>
+                                <p><b>DATE</b>: {{object.test_date}} </p>
+                                <p>You are expected to be at the stated venue at the stated time. </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% block footer %}{% include 'partials/auth_footer.html' %}{% endblock footer %}
+
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  {% block script %}{% include 'partials/auth_script.html' %}{% endblock script %}
+
+{% endblock body %}
