@@ -10,9 +10,11 @@
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div class="brand-logo">
-                <img src="{% static 'auth/images/logo.svg' %}" alt="logo">
-              </div>
+              <a href="{% url 'basic:home' %}">
+                <div class="brand-logo">
+                  <img src="{% static 'auth/images/logo.png' %}" alt="logo">
+                </div>
+              </a>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
               <form class="pt-3" method="POST">
