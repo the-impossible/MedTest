@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.shortcuts import reverse
 import uuid
-
+from datetime import datetime
 # My app imports
 
 # Create your models here.
@@ -99,6 +99,16 @@ class Department(models.Model):
         db_table = 'Department'
         verbose_name_plural = 'Departments'
 
+class Gender(models.Model):
+    title = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'Gender'
+        verbose_name_plural = 'Gender'
+
 class College(models.Model):
     college_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     college_title = models.CharField(max_length=30, unique=True)
@@ -111,10 +121,12 @@ class College(models.Model):
         db_table = 'College'
         verbose_name_plural = 'Colleges'
 
-
 class StudentProfile(models.Model):
     stud_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     user_id = models.OneToOneField(User,blank=True, null=True, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True, null=True,)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE, blank=True, null=True,)
+    age = models.IntegerField(blank=True, null=True,)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     college = models.ForeignKey(College, on_delete=models.CASCADE)
     is_completed = models.BooleanField(default=False)
@@ -133,8 +145,14 @@ class ScheduleTest(models.Model):
     has_expired = models.BooleanField(default=False)
     test_date = models.DateTimeField()
 
+    @property
+    def has_expired(self):
+        if datetime.now() > self.test_date:
+            return True
+        return False
+
     def __str__(self):
-        return f'TEST DATE FOR: {self.stud_id} is {test_date}'
+        return f'TEST DATE FOR: {self.stud_id} is {self.test_date}'
 
     class Meta:
         db_table = 'Schedule Test'

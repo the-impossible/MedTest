@@ -30,7 +30,6 @@ class CreateStudentForm(forms.Form):
         }
     ))
 
-
     college = forms.ModelChoiceField(queryset=College.objects.all(), empty_label="(Select College)", required=True, help_text="Select College", widget=forms.Select(
         attrs={
             'class':'form-control',
@@ -89,3 +88,27 @@ class SingleCreateStudentForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'name')
+
+class ScheduleTestForm(forms.Form):
+
+    session = forms.ModelChoiceField(queryset=Session.objects.all(), empty_label="(Select Session)", required=True, help_text="Select academic session", widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    college = forms.ModelChoiceField(queryset=College.objects.all(), empty_label="(Select College)", required=True, help_text="Select College", widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    test_date = forms.CharField(help_text='Enter Test date',widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'type':'datetime-local',
+        }
+    ))
+
+
+

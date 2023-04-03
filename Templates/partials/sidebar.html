@@ -21,7 +21,7 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item {% if request.path == '/auth/manage_test/' or request.path == '/auth/schedule_test/' %}active{% endif %}">
         <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
           <i class="icon-columns menu-icon"></i>
           <span class="menu-title">Medical Test</span>
@@ -29,8 +29,8 @@
         </a>
         <div class="collapse" id="form-elements">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Schedule Test</a></li>
-            <li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">Manage Test</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'auth:schedule_test' %}">Schedule Test</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'auth:manage_test' %}">Manage Test</a></li>
           </ul>
         </div>
       </li>

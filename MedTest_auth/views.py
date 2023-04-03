@@ -103,14 +103,12 @@ class ManageStudentAccount(ListView):
     def get_success_url(self):
         return reverse("auth:manage_student")
 
-
 class StudentDeleteView(SuccessMessageMixin, DeleteView):
     model = User
     success_message = "Student has been deleted!"
 
     def get_success_url(self):
         return reverse("auth:manage_student")
-
 
 class StudentAccountView(CreateView):
     model = User
@@ -132,12 +130,66 @@ class StudentAccountView(CreateView):
 
         return form
 
+class ManageTest(ListView):
+    template_name = 'auth/manage_test.html'
 
+    def get_queryset(self):
+        return ScheduleTest.objects.all().order_by('-test_date')
 
+    def get_success_url(self):
+        return reverse("auth:manage_test")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = ScheduleTestForm
+        return context
 
+    def post(self, request):
 
+        form = ScheduleTestForm(request.POST)
 
+        if form.is_valid():
 
+            session = form.cleaned_data.get('session')
+            college = form.cleaned_data.get('college')
+            test_date = form.cleaned_data.get('test_date')
 
+            amount = AmountToSchedule.objects.filter().first().amount
+            students_list = StudentProfile.objects.filter(session=session, college=college, is_completed=False).order_by('-date_created')[:amount]
 
+            if students_list:
+
+                for student in students_list:
+                    ScheduleTest.objects.create(stud_id=student,test_date=test_date)
+                    student.save()
+                messages.success(self.request, "Medical Test has been scheduled")
+            else:
+                messages.error(self.request, "Failed in fetching students for the supplied information")
+                return render(request, 'auth/manage_test.html',
+                context={
+                    'form':form,
+                    'object_list':self.get_queryset()
+                })
+        else:
+            messages.error(self.request, form.errors.as_text())
+
+            return render(request, 'auth/manage_test.html',
+            context={
+                'form':form,
+                'object_list':self.get_queryset()
+            })
+
+        return HttpResponseRedirect(self.get_success_url())
+
+class ScheduleTestView(View):
+
+    def get(self, request):
+        form = ScheduleTestForm()
+        return render(request, 'auth/schedule_test.html', {'form':form})
+
+class DeleteScheduleView(SuccessMessageMixin, DeleteView):
+    model = ScheduleTest
+    success_message = "Test has been deleted!"
+
+    def get_success_url(self):
+        return reverse("auth:manage_test")
