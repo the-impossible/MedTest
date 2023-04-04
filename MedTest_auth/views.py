@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.views import View
 import csv, io, codecs
+from django.urls import reverse_lazy
 
 
 from MedTest_auth.models import *
@@ -18,7 +19,6 @@ PASSWORD = '12345678'
 
 class DashboardView(TemplateView):
     template_name = "auth/dashboard.html"
-
 
 class LoginView(View):
     def get(self, request):
@@ -135,7 +135,7 @@ class ManageTest(ListView):
     template_name = 'auth/manage_test.html'
 
     def get_queryset(self):
-        return ScheduleTest.objects.all().order_by('-test_date')
+        return ScheduleTest.objects.filter(result_uploaded=False).order_by('-test_date')
 
     def get_success_url(self):
         return reverse("auth:manage_test")
@@ -201,3 +201,58 @@ class ViewTest(ListView):
     def get_queryset(self):
         stud_id = StudentProfile.objects.get(user_id=self.request.user).stud_id
         return ScheduleTest.objects.filter(stud_id=stud_id).order_by('-test_date')
+
+class UploadTestResultView(View):
+
+    def get(self, request, stud_id, test_id):
+        form = TestResultForm
+
+        student = StudentProfile.objects.get(stud_id=stud_id)
+
+        return render(request, "auth/upload_test.html", context={'form':form, 'student':student, 'type':'Upload'})
+
+    def post(self, request, stud_id, test_id):
+        form = TestResultForm(request.POST)
+        student = StudentProfile.objects.get(stud_id=stud_id)
+
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.stud_id = student
+
+            test = ScheduleTest.objects.get(test_id=test_id)
+            test.result_uploaded = True
+            test.save()
+
+            form.save()
+            messages.success(request, f'Result has been uploaded for {student.user_id.name}')
+            return redirect("auth:manage_test")
+
+        else:
+            messages.error(request, f'FAILED: {form.errors.as_text()}')
+
+            return render(request, "auth/upload_test.html", context={'form':form, 'student':student, 'type':'Upload'})
+
+class ManageTestResults(ListView):
+    template_name = 'auth/manage_results.html'
+
+    def get_queryset(self):
+        return TestResult.objects.all().order_by('-date_created')
+
+class UpdateTestResultView(SuccessMessageMixin, UpdateView):
+    model = TestResult
+    template_name = "auth/upload_test.html"
+    form_class = TestResultForm
+    success_message = 'Updated Successfully!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["type"] = 'Update'
+        return context
+
+    def get_success_url(self):
+        return reverse("auth:manage_results")
+
+class DeleteTestResultView(SuccessMessageMixin, DeleteView):
+    model = TestResult
+    success_message = 'Updated Successfully!'
+    success_url = reverse_lazy('auth:manage_results')

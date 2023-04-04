@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Upload Test{% endblock title %}
+{% block head %}{% include 'partials/auth_head.html' %}{% endblock head %}
+{% block body %}
+
+  <div class="container-scroller">
+    {% block nav %} {% include 'partials/auth_nav.html' %} {% endblock %}
+
+    <div class="container-fluid page-body-wrapper">
+      {% include 'partials/sidebar.html' %}
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% include 'partials/messages.html' %}
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    {{type}} Student Result for {{student.user_id.name}}
+                  </h4>
+                  <form class="form-sample" method="POST">
+                    {% csrf_token %}
+
+                    <div class="row mt-5 mb-4">
+                      <div class="col-md-6">
+                        <h4>BLOOD</h4>
+                      </div>
+                      <div class="col-md-6">
+                        <h4>URINE</h4>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">HB G/100ML <span class="asteriskField">*</span> </label>
+                          <div class="col-sm-9">
+                            {{ form.HB }}
+                            {% if form.HB.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.HB.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">REACTION</label>
+                          <div class="col-sm-9">
+                            {{ form.REACTION }}
+                            {% if form.REACTION.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.REACTION.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">MP</label>
+                          <div class="col-sm-9">
+                            {{ form.MP }}
+                            {% if form.MP.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.MP.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">PROTEIN <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.PROTEIN }}
+                            {% if form.PROTEIN.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.PROTEIN.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">DIFF COUNT</label>
+                          <div class="col-sm-9">
+                            {{ form.DIFF }}
+                            {% if form.DIFF.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.DIFF.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">SUGAR (GLUCOSE) <span class="asteriskField">*</span> </label>
+                          <div class="col-sm-9">
+                            {{ form.SUGAR }}
+                            {% if form.SUGAR.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.SUGAR.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">SKIN SNIP & BLOOD FILM</label>
+                          <div class="col-sm-9">
+                            {{ form.SNIP }}
+                            {% if form.SNIP.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.SNIP.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">BILIRUBIN <span class="asteriskField">*</span> </label>
+                          <div class="col-sm-9">
+                            {{ form.BILIRUBIN }}
+                            {% if form.BILIRUBIN.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.BILIRUBIN.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">SICKLING <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.SICKLING }}
+                            {% if form.SICKLING.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.SICKLING.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">ACETONE <span class="asteriskField">*</span> </label>
+                          <div class="col-sm-9">
+                            {{ form.ACETONE }}
+                            {% if form.ACETONE.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.ACETONE.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">GENOTYPE / SOLUBILITY </label>
+                          <div class="col-sm-9">
+                            {{ form.GENOTYPE }}
+                            {% if form.GENOTYPE.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.GENOTYPE.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">SPECIFIC GRAVITY </label>
+                          <div class="col-sm-9">
+                            {{ form.GRAVITY }}
+                            {% if form.GRAVITY.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.GRAVITY.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">GROUPING <span class="asteriskField">*</span></label>
+                          <div class="col-sm-9">
+                            {{ form.GROUPING }}
+                            {% if form.GROUPING.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.GROUPING.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">PREGNANCY </label>
+                          <div class="col-sm-9">
+                            {{ form.U_PREGNANCY }}
+                            {% if form.U_PREGNANCY.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.U_PREGNANCY.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">HB SAG </label>
+                          <div class="col-sm-9">
+                            {{ form.SAG }}
+                            {% if form.SAG.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.SAG.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">MICROSCOPY/C/S </label>
+                          <div class="col-sm-9">
+                            {{ form.MICROSCOPY }}
+                            {% if form.MICROSCOPY.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.MICROSCOPY.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">PREGNANCY </label>
+                          <div class="col-sm-9">
+                            {{ form.PREGNANCY }}
+                            {% if form.PREGNANCY.errors %}
+                              <div class="alert alert-danger mt-2" role="alert">
+                                {{ form.PREGNANCY.errors }}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Submit</label>
+                          <div class="col-sm-9">
+                            <div class="form-check">
+                              <button type="submit" class="btn btn-primary btn-block">{{type}} Result</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        {% block footer %}{% include 'partials/auth_footer.html' %}{% endblock footer %}
+
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  {% include 'partials/modal_create_student.html' %}
+
+  {% block script %}{% include 'partials/auth_script.html' %}{% endblock script %}
+
+{% endblock body %}

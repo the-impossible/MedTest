@@ -24,10 +24,11 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item {% if request.path == '/auth/manage_test/' or request.path == '/auth/schedule_test/' %}active{% endif %}">
+
+      <li class="nav-item {% if request.path == '/auth/manage_test/' or request.path == '/auth/schedule_test/' %} active{% endif %}">
         <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
           <i class="icon-columns menu-icon"></i>
-          <span class="menu-title">Medical Test</span>
+          <span class="menu-title">Schedule Test</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="form-elements">
@@ -37,6 +38,14 @@
           </ul>
         </div>
       </li>
+
+      <li class="nav-item {% if request.path == '/auth/manage_results/' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'auth:manage_results' %}">
+          <i class="icon-columns menu-icon"></i>
+          <span class="menu-title">Manage Test Result</span>
+        </a>
+      </li>
+
       {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'auth:view_test' %}">

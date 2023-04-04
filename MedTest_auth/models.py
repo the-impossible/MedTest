@@ -143,6 +143,7 @@ class ScheduleTest(models.Model):
     test_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
     stud_id = models.ForeignKey(StudentProfile,blank=True, null=True, on_delete=models.CASCADE)
     has_expired = models.BooleanField(default=False)
+    result_uploaded = models.BooleanField(default=False)
     test_date = models.DateTimeField()
 
     @property
@@ -169,9 +170,54 @@ class AmountToSchedule(models.Model):
         db_table = 'Amount to schedule'
         verbose_name_plural = 'Amount to schedule'
 
+class BloodGroup(models.Model):
+    blood_type = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'{self.blood_type}'
+
+    class Meta:
+        db_table = 'Blood Group'
+        verbose_name_plural = 'Blood Group'
+
+class Sickling(models.Model):
+    sick = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f'{self.sick}'
+
+    class Meta:
+        db_table = 'Sickling'
+        verbose_name_plural = 'Sickling'
+
 class TestResult(models.Model):
     result_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True, editable=False)
-    stud_id = models.ForeignKey(StudentProfile,blank=True, null=True, on_delete=models.CASCADE)
-    dept_title = models.CharField(max_length=30, unique=True)
-    has_expired = models.BooleanField(default=False)
-    test_date = models.DateTimeField()
+    stud_id = models.OneToOneField(StudentProfile,blank=True, null=True, on_delete=models.CASCADE)
+    HB = models.FloatField()
+    MP = models.CharField(max_length=30)
+    DIFF = models.CharField(max_length=30)
+    SNIP = models.CharField(max_length=30)
+    SICKLING = models.ForeignKey(Sickling,blank=True, null=True, on_delete=models.CASCADE)
+    GENOTYPE = models.CharField(max_length=30)
+    GROUPING = models.ForeignKey(BloodGroup,blank=True, null=True, on_delete=models.CASCADE)
+    SAG = models.CharField(max_length=30)
+    PREGNANCY = models.CharField(max_length=30)
+
+    REACTION = models.CharField(max_length=30)
+    PROTEIN = models.CharField(max_length=30)
+    SUGAR = models.CharField(max_length=30)
+    BILIRUBIN = models.CharField(max_length=30)
+    ACETONE = models.CharField(max_length=30)
+    GRAVITY = models.CharField(max_length=30)
+    U_PREGNANCY = models.CharField(max_length=30)
+    MICROSCOPY = models.CharField(max_length=30)
+
+    date_created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'RESULT FOR: {self.date_created}'
+
+    class Meta:
+        db_table = 'Test Result'
+        verbose_name_plural = 'Test Result'
+

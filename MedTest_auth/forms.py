@@ -110,5 +110,117 @@ class ScheduleTestForm(forms.Form):
         }
     ))
 
+class TestResultForm(forms.ModelForm):
+
+    HB = forms.FloatField(help_text='HB G/100ML', required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'type':'number',
+            'step':'0.01',
+        }
+    ))
+
+    MP = forms.CharField(help_text='MP',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    DIFF = forms.CharField(help_text='DIFF',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    SNIP = forms.CharField(help_text='SNIP',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    SICKLING = forms.ModelChoiceField(queryset=Sickling.objects.all(), empty_label="(Select Sickling)", required=True, help_text="Select Sickling",  widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    GENOTYPE = forms.CharField(help_text='SNIP',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    GROUPING = forms.ModelChoiceField(queryset=BloodGroup.objects.all(), empty_label="(Select Blood Group)", required=True, help_text="Select Blood Group",  widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    SAG = forms.CharField(help_text='SAG',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    PREGNANCY = forms.CharField(help_text='PREGNANCY',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    REACTION = forms.CharField(help_text='REACTION',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    PROTEIN = forms.CharField(help_text='PROTEIN',required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    SUGAR = forms.CharField(help_text='SUGAR',required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    BILIRUBIN = forms.CharField(help_text='BILIRUBIN',required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    ACETONE = forms.CharField(help_text='ACETONE',required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    GRAVITY = forms.CharField(help_text='GRAVITY',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    U_PREGNANCY = forms.CharField(help_text='U_PREGNANCY',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    MICROSCOPY = forms.CharField(help_text='MICROSCOPY',required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+
+    class Meta:
+        model = TestResult
+        fields = "__all__"
+        exclude = ('stud_id', 'result_id' 'date_created')
+
 
 
