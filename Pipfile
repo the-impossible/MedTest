@@ -12,6 +12,7 @@ python-decouple = "*"
 pylint-django = "*"
 pylint = "*"
 crispy-bootstrap4 = "*"
+django-wkhtmltopdf = "*"
 
 [dev-packages]
 

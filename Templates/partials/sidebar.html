@@ -55,7 +55,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="pages/documentation/documentation.html">
+        <a class="nav-link" href="{% url 'auth:view_result' request.user.user_id %}">
           <i class="icon-columns menu-icon"></i>
           <span class="menu-title">View Result</span>
         </a>
@@ -64,7 +64,7 @@
       {% endif %}
 
       <li class="nav-item">
-        <a class="nav-link" href="pages/documentation/documentation.html">
+        <a class="nav-link" href="{% url 'auth:update_profile' %}">
           <i class="icon-head menu-icon"></i>
           <span class="menu-title">Profile</span>
         </a>

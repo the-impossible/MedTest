@@ -216,11 +216,101 @@ class TestResultForm(forms.ModelForm):
         }
     ))
 
-
     class Meta:
         model = TestResult
         fields = "__all__"
         exclude = ('stud_id', 'result_id' 'date_created')
 
+class ProfilePicsForm(forms.ModelForm):
+
+    pic = forms.ImageField(required=False, widget=forms.FileInput(
+        attrs={
+                'class':'form-control',
+                'type':'file',
+                'accept':'image/png, image/jpeg'
+            }
+        ))
+
+    class Meta:
+        model = User
+        fields = ('pic',)
+
+class ChangePassForm(forms.ModelForm):
+
+    old_pass = forms.CharField(help_text='Enter Current Password',widget=forms.TextInput(
+        attrs={
+            'class':'form-control mr-3',
+            'type':'password',
+            'name':'old_pass',
+            'placeholder':'Current Password',
+        }
+    ))
+
+    new_pass = forms.CharField(help_text='Enter New Password',widget=forms.TextInput(
+        attrs={
+            'class':'form-control mr-3',
+            'type':'password',
+            'name':'new_pass',
+            'placeholder':'New Password',
+        }
+    ))
+
+    password = forms.CharField(help_text='Enter New Password', required=False, widget=forms.TextInput(
+        attrs={
+            'class':'form-control mr-3',
+            'type':'password',
+            'name':'new_pass',
+            'placeholder':'New Password',
+        }
+    ))
+
+    confirm_pass = forms.CharField(help_text='Confirm New Password',widget=forms.TextInput(
+        attrs={
+            'class':'form-control mr-3',
+            'type':'password',
+            'placeholder':'Confirm Password',
+            'name':'confirm_pass',
+        }
+    ))
 
 
+    def clean_confirm_pass(self):
+        new_pass = self.cleaned_data.get('new_pass')
+        confirm_pass = self.cleaned_data.get('confirm_pass')
+        if new_pass != confirm_pass:
+            raise forms.ValidationError("new_pass and confirm password doesn't match!")
+
+        if len(new_pass) < 6 :
+            raise forms.ValidationError("Password should be at least 6 characters")
+
+        return confirm_pass
+
+
+    class Meta:
+        model = User
+        fields = ('password',)
+
+class StudentProfileForm(forms.ModelForm):
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), empty_label="(Select Gender)", required=True, help_text="Select Gender",  widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    department = forms.ModelChoiceField(queryset=Department.objects.all(), empty_label="(Select Department)", required=True, help_text="Select Department",  widget=forms.Select(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+
+    age = forms.CharField(help_text='age',required=True, widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'type':'number',
+            'placeholder':'age',
+        }
+    ))
+
+    class Meta:
+        model = StudentProfile
+        fields = ('gender','age','department')

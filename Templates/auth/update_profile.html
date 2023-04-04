@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Update Profile{% endblock title %}
+{% block head %}{% include 'partials/auth_head.html' %}{% endblock head %}
+{% block body %}
+
+  <div class="container-scroller">
+    {% block nav %} {% include 'partials/auth_nav.html' %} {% endblock %}
+
+    <div class="container-fluid page-body-wrapper">
+      {% include 'partials/sidebar.html' %}
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% include 'partials/messages.html' %}
+
+          <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Upload Profile Image</h4>
+
+                <form class="form-inline" method="POST" enctype="multipart/form-data">
+                  <img src="{% static request.user.pic %}" width="100" class="mr-4" alt="profile"/>
+                  {% csrf_token %}
+                  <label class="sr-only" for="inlineFormInputName2">File Upload</label>
+                  <div class="input-group mb-2 mr-sm-2">
+                    {{ picForm.pic }}
+                    {% if picForm.pic.errors %}
+                    <div class="alert alert-danger mt-2" role="alert">
+                      {{ picForm.pic.errors }}
+                    </div>
+                    {% endif %}
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit" name="picture">Upload</button>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+
+          {% if not request.user.is_staff %}
+
+          <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  Update Account Information
+                </h4>
+                <form class="form-sample" method="POST" action>
+                  {% csrf_token %}
+                  <div class="row mt-5">
+
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Sex<span class="asteriskField">*</span></label>
+                        <div class="col-sm-9">
+                          {{ studentForm.gender }}
+                          {% if studentForm.gender.errors %}
+                            <div class="alert alert-danger mt-2" role="alert">
+                              {{ studentForm.gender.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Age <span class="asteriskField">*</span></label>
+                        <div class="col-sm-9">
+                          {{ studentForm.age }}
+                          {% if studentForm.age.errors %}
+                            <div class="alert alert-danger mt-2" role="alert">
+                              {{ studentForm.age.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Department <span class="asteriskField">*</span></label>
+                        <div class="col-sm-9">
+                          {{ studentForm.department }}
+                          {% if studentForm.department.errors %}
+                            <div class="alert alert-danger mt-2" role="alert">
+                              {{ studentForm.department.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Submit <span class="asteriskField">*</span></label>
+                        <div class="col-sm-9">
+                          <button type="submit" class="btn btn-primary btn-block" name="info">Update Info</button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+
+
+          <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Change Password</h4>
+
+                <form class="form-inline" method="POST" >
+                  {% csrf_token %}
+                  {{ passForm.old_pass }}
+
+                  {{ passForm.new_pass }}
+
+                  {{ passForm.confirm_pass }}
+
+                  <button type="submit" class="btn btn-primary mb-2" name="pass">Change Password</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+        {% block footer %}{% include 'partials/auth_footer.html' %}{% endblock footer %}
+
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  {% include 'partials/modal_create_student.html' %}
+
+  {% block script %}{% include 'partials/auth_script.html' %}{% endblock script %}
+
+{% endblock body %}

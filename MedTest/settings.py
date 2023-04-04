@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "MedTest_auth",
     "MedTest_basic",
     "MedTest_test",
+    "wkhtmltopdf",
 ]
 
 MIDDLEWARE = [

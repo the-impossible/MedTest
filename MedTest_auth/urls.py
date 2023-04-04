@@ -22,6 +22,10 @@ from MedTest_auth.views import  (
     DeleteTestResultView,
 
     ViewTest,
+    ResultView,
+
+    UpdateProfileView,
+
 )
 
 urlpatterns = [
@@ -46,5 +50,8 @@ urlpatterns = [
 
     # Students
     path('view_test/', ViewTest.as_view(), name="view_test"),
+    path('update_profile/', UpdateProfileView.as_view(), name="update_profile"),
+    path('view_result/<str:pk>', ResultView.as_view(), name="view_result"),
+
 
 ]

@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.views import View
 import csv, io, codecs
@@ -256,3 +256,110 @@ class DeleteTestResultView(SuccessMessageMixin, DeleteView):
     model = TestResult
     success_message = 'Updated Successfully!'
     success_url = reverse_lazy('auth:manage_results')
+
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
+    model = TestResult
+    template_name = "auth/upload_test.html"
+    form_class = TestResultForm
+    success_message = 'Updated Successfully!'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["type"] = 'Update'
+        return context
+
+    def get_success_url(self):
+        return reverse("auth:manage_results")
+
+class UpdateProfileView(View):
+
+    studentForm = StudentProfileForm
+    picForm = ProfilePicsForm
+    passForm = ChangePassForm
+
+    def get(self, request):
+
+        if not request.user.is_staff:
+            context = {
+                'studentForm':self.studentForm(instance=StudentProfile.objects.get(user_id=request.user.user_id)),
+
+                'picForm':self.picForm,
+                'passForm':self.passForm,
+            }
+        else:
+            context = {
+                'picForm':self.picForm,
+                'passForm':self.passForm,
+            }
+
+        return render(request, "auth/update_profile.html", context=context)
+
+    def post(self, request):
+
+        context = {
+            'studentForm':self.studentForm,
+            'picForm':self.picForm,
+            'passForm':self.passForm,
+        }
+
+        if 'pass' in request.POST:
+
+            form = self.passForm(request.POST)
+
+            if form.is_valid():
+                old_pass = form.cleaned_data.get('old_pass')
+                user_pass = request.user.password
+
+                if check_password(old_pass, user_pass):
+                    user = User.objects.get(user_id=request.user.user_id)
+                    user.password = make_password(form.cleaned_data.get('new_pass'))
+                    user.save()
+                    messages.success(request, "Password is now updated, you can login to continue!")
+                    return redirect("auth:login")
+                messages.error(request, "Incorrect current password!")
+
+            messages.error(request, f"{form.errors.as_text()}")
+            context["passForm"] = form
+
+        elif 'info' in request.POST:
+            student = StudentProfile.objects.get(user_id=request.user.user_id)
+            form = self.studentForm(request.POST, instance=student)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, f"Profile updated Successfully!")
+                return redirect("auth:update_profile")
+            else:
+                context['studentForm'] = form
+                messages.error(request, f"{form.errors.as_text()}")
+
+        elif 'picture' in request.POST:
+            user = User.objects.get(user_id=request.user.user_id)
+            form = self.picForm(request.POST, request.FILES, instance=user)
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, f"Profile updated Successfully!")
+                return redirect("auth:update_profile")
+            else:
+                context['picForm'] = form
+                messages.error(request, f"{form.errors.as_text()}")
+
+        return render(request, "auth/update_profile.html", context=context)
+
+class ResultView(View):
+
+    def get(self, request, pk):
+        try:
+            student = StudentProfile.objects.get(user_id=pk)
+
+            if student.age and student.department and student.gender:
+                context = {"object": TestResult.objects.get(stud_id=student.stud_id)}
+                return render(request, "auth/view_result.html", context)
+            messages.error(request, "Update your profile")
+            return redirect('auth:update_profile')
+        except StudentProfile.DoesNotExist:
+            messages.error(request, "Test result has not been uploaded!")
+        except TestResult.DoesNotExist:
+            messages.error(request, "Test result has not been uploaded!")
+        return redirect('auth:dashboard')
