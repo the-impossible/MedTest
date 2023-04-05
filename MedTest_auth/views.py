@@ -223,6 +223,9 @@ class UploadTestResultView(View):
             test.result_uploaded = True
             test.save()
 
+            student.is_completed = True
+            student.save()
+
             form.save()
             messages.success(request, f'Result has been uploaded for {student.user_id.name}')
             return redirect("auth:manage_test")
