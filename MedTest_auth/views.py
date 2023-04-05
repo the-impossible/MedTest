@@ -356,10 +356,13 @@ class ResultView(View):
             if student.age and student.department and student.gender:
                 context = {"object": TestResult.objects.get(stud_id=student.stud_id)}
                 return render(request, "auth/view_result.html", context)
+            if request.user.is_staff:
+                messages.error(request, "Student has not updated profile so result cant be viewed")
+                return redirect('auth:manage_results')
             messages.error(request, "Update your profile")
             return redirect('auth:update_profile')
         except StudentProfile.DoesNotExist:
-            messages.error(request, "Test result has not been uploaded!")
+            messages.error(request, "Test result has not been uploaded keep checking!")
         except TestResult.DoesNotExist:
-            messages.error(request, "Test result has not been uploaded!")
+            messages.error(request, "Test result has not been uploaded keep checking!")
         return redirect('auth:dashboard')

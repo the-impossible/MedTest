@@ -47,7 +47,10 @@
                           <td>{{object.HB}}</td>
                           <td>{{object.SICKLING}}</td>
                           <td>{{object.GROUPING}}</td>
-                          <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{forloop.counter}}" style="cursor: pointer;"> <i class="fa fa-trash"></i> delete </a></td>
+                          <td>
+                            <a class="btn btn-primary btn-sm" href="{% url 'auth:view_result' object.stud_id.user_id.user_id %}"> <i class="fa fa-file"></i> print </a>
+                            <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{forloop.counter}}" style="cursor: pointer;"> <i class="fa fa-trash"></i> delete </a>
+                          </td>
                         </tr>
 
                         <div class="modal fade" id="deleteModal{{forloop.counter}}" style="display: none;" aria-hidden="true">

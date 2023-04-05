@@ -62,7 +62,9 @@
                           badge-primary
                           {% endif %}
                              ">{{object.has_expired}}</label> </td>
-                          <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{forloop.counter}}" style="cursor: pointer;"> <i class="fa fa-trash"></i> delete </a></td>
+                          <td>
+                            <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{forloop.counter}}" style="cursor: pointer;"> <i class="fa fa-trash"></i> delete </a>
+                          </td>
                         </tr>
 
                         <div class="modal fade" id="deleteModal{{forloop.counter}}" style="display: none;" aria-hidden="true">
