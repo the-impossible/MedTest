@@ -41,7 +41,7 @@
                           <th> Full Name </th>
                           <th> Reg No. </th>
                           <th> College </th>
-                          <th> Status </th>
+                          <th> Test Status </th>
                           <th> Action </th>
                         </tr>
                       </thead>
@@ -59,7 +59,12 @@
                           {% else %}
                           badge-warning
                           {% endif %}
-                             ">{{object.is_completed}}</label> </td>
+                             ">
+                             {% if object.is_completed %}
+                          Completed
+                          {% else %}
+                          Not-taken
+                          {% endif %}</label> </td>
                           <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{forloop.counter}}" style="cursor: pointer;"> <i class="fa fa-trash"></i> delete </a></td>
                         </tr>
 

@@ -60,7 +60,7 @@ class LogoutView(LoginRequiredMixin, View):
 class ManageStudentAccount(ListView):
     template_name = 'auth/manage_student.html'
     def get_queryset(self):
-        return StudentProfile.objects.all()
+        return StudentProfile.objects.all().order_by('date_created')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -156,7 +156,7 @@ class ManageTest(ListView):
             test_date = form.cleaned_data.get('test_date')
 
             amount = AmountToSchedule.objects.filter().first().amount
-            students_list = StudentProfile.objects.filter(session=session, college=college, is_completed=False).order_by('-date_created')[:amount]
+            students_list = StudentProfile.objects.filter(session=session, college=college, is_completed=False).order_by('date_created')[:amount]
 
             if students_list:
 
@@ -216,6 +216,7 @@ class UploadTestResultView(View):
         student = StudentProfile.objects.get(stud_id=stud_id)
 
         if form.is_valid():
+
             form = form.save(commit=False)
             form.stud_id = student
 
